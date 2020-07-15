@@ -1,0 +1,259 @@
+package com.example.mini_tiktok.activity;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.mini_tiktok.R;
+import com.example.mini_tiktok.net.GetVideosResponse;
+import com.example.mini_tiktok.net.IMiniDouyinService;
+import com.example.mini_tiktok.net.ImageHelper;
+import com.example.mini_tiktok.net.PostVideoResponse;
+import com.example.mini_tiktok.net.Video;
+import com.example.mini_tiktok.utils.ResourceUtils;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
+public class NetModuleActivity extends AppCompatActivity {
+
+    private static final int PICK_IMAGE = 1;
+    private static final int PICK_VIDEO = 2;
+    private static final String TAG = "MainActivityTAG";
+    private static final String myID = "15097722150";
+    private static final String myName = "LYC";
+    private static final int REQUEST_EXTERNAL_STORAGE = 1;
+    private RecyclerView mRv;
+    private List<Video> mVideos = new ArrayList<>();
+    public Uri mSelectedImage;
+    private Uri mSelectedVideo;
+    public Button mBtn;
+    private Button mBtnRefresh;
+
+    private Retrofit retrofit = new Retrofit.Builder()
+            .baseUrl(IMiniDouyinService.BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build();
+    private IMiniDouyinService miniDouyinService = retrofit.create(IMiniDouyinService.class);
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        initRecyclerView();
+        initBtns();
+    }
+
+    private void initBtns() {
+        /*
+        mBtn = findViewById(R.id.btn);
+        mBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String s = mBtn.getText().toString();
+                if (getString(R.string.select_an_image).equals(s)) {
+                    //@TODO 1填充选择图片的功能
+                    chooseImage();
+                } else if (getString(R.string.select_a_video).equals(s)) {
+                    //@TODO 2填充选择视频的功能
+                    chooseVideo();
+                } else if (getString(R.string.post_it).equals(s)) {
+                    if (mSelectedVideo != null && mSelectedImage != null) {
+                        //@TODO 3调用上传功能
+                        postVideo();
+                    } else {
+                        throw new IllegalArgumentException("error data uri, mSelectedVideo = "
+                                + mSelectedVideo
+                                + ", mSelectedImage = "
+                                + mSelectedImage);
+                    }
+                } else if ((getString(R.string.success_try_refresh).equals(s))) {
+                    mBtn.setText(R.string.select_an_image);
+                }
+            }
+        });
+
+        mBtnRefresh = findViewById(R.id.btn_refresh);
+        */
+    }
+
+    public static class MyViewHolder extends RecyclerView.ViewHolder {
+        public ImageView img;
+
+        public MyViewHolder(@NonNull View itemView) {
+            super(itemView);
+            //img = itemView.findViewById(R.id.img);
+        }
+
+        public void bind(final Activity activity, final Video video) {
+            ImageHelper.displayWebImage(video.imageUrl, img);
+            img.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //VideoActivity.launch(activity, video.videoUrl);
+                }
+            });
+        }
+    }
+
+    private void initRecyclerView() {
+        //mRv = findViewById(R.id.rv);
+        mRv.setLayoutManager(new LinearLayoutManager(this));
+        mRv.setAdapter(new RecyclerView.Adapter<MyViewHolder>() {
+            @NonNull
+            @Override
+            public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+                //return new MyViewHolder(LayoutInflater.from(NetModuleActivity.this).inflate(R.layout.video_item_view, viewGroup, false));
+                return null;
+            }
+
+            @Override
+            public void onBindViewHolder(@NonNull MyViewHolder viewHolder, int i) {
+                final Video video = mVideos.get(i);
+                viewHolder.bind(NetModuleActivity.this, video);
+            }
+
+            @Override
+            public int getItemCount() {
+                return mVideos.size();
+            }
+        });
+    }
+
+    public void chooseImage() {
+        Log.d(TAG,"Begin to choose image");
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"),
+                PICK_IMAGE);
+    }
+
+    public void chooseVideo() {
+        Log.d(TAG,"Begin to choose video");
+        Intent intent = new Intent();
+        intent.setType("video/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Video"), PICK_VIDEO);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, final Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        Log.d(TAG, "onActivityResult() called with: requestCode = ["
+                + requestCode
+                + "], resultCode = ["
+                + resultCode
+                + "], data = ["
+                + data
+                + "]");
+
+        if (resultCode == RESULT_OK && null != data) {
+            if (requestCode == PICK_IMAGE) {
+                mSelectedImage = data.getData();
+                Log.d(TAG, "selectedImage = " + mSelectedImage);
+                //mBtn.setText(R.string.select_a_video);
+            } else if (requestCode == PICK_VIDEO) {
+                mSelectedVideo = data.getData();
+                Log.d(TAG, "mSelectedVideo = " + mSelectedVideo);
+                //mBtn.setText(R.string.post_it);
+            }
+        }
+    }
+
+    private MultipartBody.Part getMultipartFromUri(String name, Uri uri) {
+        File f = new File(ResourceUtils.getRealPath(NetModuleActivity.this, uri));
+        RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), f);
+        return MultipartBody.Part.createFormData(name, f.getName(), requestFile);
+    }
+
+    private void postVideo() {
+        Log.d(TAG,"Begin to post");
+        mBtn.setText("POSTING...");
+        mBtn.setEnabled(false);
+        MultipartBody.Part coverImagePart;
+        MultipartBody.Part videoPart;
+        try {
+            coverImagePart = getMultipartFromUri("cover_image", mSelectedImage);
+            videoPart = getMultipartFromUri("video", mSelectedVideo);
+        }catch(Exception e){
+            Log.e(TAG,e.getMessage());
+            return ;
+        }
+        Log.d(TAG,"Get file");
+        //@TODO 4下面的id和名字替换成自己的
+        miniDouyinService.postVideo(myID, myName, coverImagePart, videoPart).enqueue(
+                new Callback<PostVideoResponse>() {
+                    @Override
+                    public void onResponse(Call<PostVideoResponse> call, Response<PostVideoResponse> response) {
+                        if (response.body() != null) {
+                            Toast.makeText(NetModuleActivity.this, response.body().toString(), Toast.LENGTH_SHORT)
+                                    .show();
+                        }
+                        //mBtn.setText(R.string.select_an_image);
+                        mBtn.setEnabled(true);
+                    }
+
+                    @Override
+                    public void onFailure(Call<PostVideoResponse> call, Throwable throwable) {
+                        //mBtn.setText(R.string.select_an_image);
+                        mBtn.setEnabled(true);
+                        Toast.makeText(NetModuleActivity.this, throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    public void fetchFeed(View view) {
+        mBtnRefresh.setText("requesting...");
+        mBtnRefresh.setEnabled(false);
+        miniDouyinService.getVideos().enqueue(new Callback<GetVideosResponse>() {
+            @Override
+            public void onResponse(Call<GetVideosResponse> call, Response<GetVideosResponse> response) {
+                Log.d(TAG,"Get response");
+                if (response.body() != null && response.body().videos != null) {
+                    List<Video> tmp = response.body().videos;
+                    //@TODO  5服务端没有做去重，拿到列表后，可以在端侧根据自己的id，做列表筛选。
+                    mVideos.clear();
+                    for(Video v : tmp){
+                        if(v.studentId.equals(myID)) mVideos.add(v);
+                    }
+                    //mVideos = response.body().videos;
+                    mRv.getAdapter().notifyDataSetChanged();
+                }
+                //mBtnRefresh.setText(R.string.refresh_feed);
+                mBtnRefresh.setEnabled(true);
+            }
+
+            @Override
+            public void onFailure(Call<GetVideosResponse> call, Throwable throwable) {
+                //mBtnRefresh.setText(R.string.refresh_feed);
+                mBtnRefresh.setEnabled(true);
+                Toast.makeText(NetModuleActivity.this, throwable.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+}
