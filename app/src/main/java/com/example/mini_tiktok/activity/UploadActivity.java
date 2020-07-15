@@ -117,7 +117,11 @@ public class UploadActivity extends AppCompatActivity {
         btnUpload.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
-                postVideo();
+                if (mSelectedVideo != null && mSelectedImage != null) {
+                    postVideo();
+                } else {
+                    Toast.makeText(UploadActivity.this,"请选择视频及其封面",Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
