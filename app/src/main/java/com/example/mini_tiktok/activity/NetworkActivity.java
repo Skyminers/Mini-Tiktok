@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -38,7 +37,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class NetModuleActivity extends AppCompatActivity {
+public class NetworkActivity extends AppCompatActivity {
 
     private static final int PICK_IMAGE = 1;
     private static final int PICK_VIDEO = 2;
@@ -133,7 +132,7 @@ public class NetModuleActivity extends AppCompatActivity {
             @Override
             public void onBindViewHolder(@NonNull MyViewHolder viewHolder, int i) {
                 final Video video = mVideos.get(i);
-                viewHolder.bind(NetModuleActivity.this, video);
+                viewHolder.bind(NetworkActivity.this, video);
             }
 
             @Override
@@ -186,7 +185,7 @@ public class NetModuleActivity extends AppCompatActivity {
     }
 
     private MultipartBody.Part getMultipartFromUri(String name, Uri uri) {
-        File f = new File(ResourceUtils.getRealPath(NetModuleActivity.this, uri));
+        File f = new File(ResourceUtils.getRealPath(NetworkActivity.this, uri));
         RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), f);
         return MultipartBody.Part.createFormData(name, f.getName(), requestFile);
     }
@@ -211,7 +210,7 @@ public class NetModuleActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<PostVideoResponse> call, Response<PostVideoResponse> response) {
                         if (response.body() != null) {
-                            Toast.makeText(NetModuleActivity.this, response.body().toString(), Toast.LENGTH_SHORT)
+                            Toast.makeText(NetworkActivity.this, response.body().toString(), Toast.LENGTH_SHORT)
                                     .show();
                         }
                         //mBtn.setText(R.string.select_an_image);
@@ -222,7 +221,7 @@ public class NetModuleActivity extends AppCompatActivity {
                     public void onFailure(Call<PostVideoResponse> call, Throwable throwable) {
                         //mBtn.setText(R.string.select_an_image);
                         mBtn.setEnabled(true);
-                        Toast.makeText(NetModuleActivity.this, throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(NetworkActivity.this, throwable.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -252,7 +251,7 @@ public class NetModuleActivity extends AppCompatActivity {
             public void onFailure(Call<GetVideosResponse> call, Throwable throwable) {
                 //mBtnRefresh.setText(R.string.refresh_feed);
                 mBtnRefresh.setEnabled(true);
-                Toast.makeText(NetModuleActivity.this, throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(NetworkActivity.this, throwable.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
