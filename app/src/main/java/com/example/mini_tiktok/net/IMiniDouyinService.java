@@ -1,8 +1,5 @@
 package com.example.mini_tiktok.net;
 
-import com.example.mini_tiktok.net.GetVideosResponse;
-import com.example.mini_tiktok.net.PostVideoResponse;
-
 import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.GET;

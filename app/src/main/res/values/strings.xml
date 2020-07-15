@@ -3,4 +3,6 @@
     <string name="choose_from_file">从文件选择</string>
     <string name="btn_use_camera">从相机拍摄</string>
     <string name="upload">上传</string>
+    <string name="take_photo">拍摄</string>
+    <string name="take_video">录制</string>
 </resources>
