@@ -13,7 +13,7 @@ import com.example.mini_tiktok.activity.UploadActivity;
 import com.example.mini_tiktok.activity.UserActivity;
 import com.example.mini_tiktok.activity.VideoListActivity;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
 
     private Button btn1;
     private Button btn2;

@@ -40,7 +40,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class UploadActivity extends AppCompatActivity {
+public class UploadActivity extends Activity {
 
     private static final int PICK_IMAGE = 1;
     private static final int CAMERA_IMAGE = 2;

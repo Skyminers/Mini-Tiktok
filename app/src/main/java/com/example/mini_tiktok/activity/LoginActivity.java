@@ -1,5 +1,6 @@
 package com.example.mini_tiktok.activity;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -19,7 +20,7 @@ import com.example.mini_tiktok.R;
 import com.example.mini_tiktok.database.AccountEntity;
 import com.example.mini_tiktok.utils.UserAccountUtils;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends Activity {
 
     private EditText userName;
     private EditText password;

@@ -1,6 +1,7 @@
 package com.example.mini_tiktok.activity;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.ImageFormat;
@@ -35,7 +36,7 @@ import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class CameraActivity extends AppCompatActivity implements SurfaceHolder.Callback{
+public class CameraActivity extends Activity implements SurfaceHolder.Callback{
 
     private Button btn;
     private SurfaceView surfaceView;
