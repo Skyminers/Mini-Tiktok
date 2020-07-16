@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.example.mini_tiktok.R;
 import com.example.mini_tiktok.activity.VideoActivity;
@@ -80,7 +81,9 @@ public class VideoListActivity extends Activity {
 
     private void initRecyclerView() {
         mRv = findViewById(R.id.video_list);
-        mRv.setLayoutManager(new LinearLayoutManager(this));
+        StaggeredGridLayoutManager layout = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        mRv.setLayoutManager(layout);
+       // mRv.setLayoutManager(new LinearLayoutManager(this));
         mRv.setAdapter(new RecyclerView.Adapter<MyViewHolder>() {
             @NonNull
             @Override

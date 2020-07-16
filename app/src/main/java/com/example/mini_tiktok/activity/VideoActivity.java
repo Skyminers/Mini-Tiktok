@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.mini_tiktok.R;
 import com.example.mini_tiktok.adapter.VideoAdapter;
 import com.example.mini_tiktok.net.Video;
+import com.example.mini_tiktok.utils.AttentionUtils;
 import com.lmx.library.media.VideoPlayRecyclerView;
 
 import java.io.Serializable;
@@ -38,6 +39,7 @@ public class VideoActivity extends Activity {
         activity.startActivity(intent);
         Log.i(TAG, "start");
     }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,4 +65,9 @@ public class VideoActivity extends Activity {
         adapter.release();
     }
 
+    public void Attention(int Number, String userId, List<Video> videos){
+        if(AttentionUtils.checkAttention(VideoActivity.this,userId, videos.get(Number).studentId)){
+
+        }
+    }
 }

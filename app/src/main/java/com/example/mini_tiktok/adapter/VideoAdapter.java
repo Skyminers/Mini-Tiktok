@@ -1,11 +1,13 @@
 package com.example.mini_tiktok.adapter;
 
+import android.animation.Animator;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -13,6 +15,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
@@ -20,6 +23,8 @@ import com.example.mini_tiktok.R;
 import com.example.mini_tiktok.activity.VideoActivity;
 import com.example.mini_tiktok.activity.VideoListActivity;
 import com.example.mini_tiktok.net.Video;
+import com.example.mini_tiktok.utils.AttentionUtils;
+import com.example.mini_tiktok.utils.UserAccountUtils;
 import com.example.mini_tiktok.view.VideoLoadingProgressbar;
 import com.lmx.library.media.VideoPlayAdapter;
 
@@ -35,8 +40,12 @@ public class VideoAdapter extends VideoPlayAdapter<VideoAdapter.ViewHolder> {
     private String pictureUrl;
     private String NickName;
     private TextView tvNickName;
+    private Button buttonAttention;
     private String TAG = "video_activity";
     private int Number;
+    private LottieAnimationView animationView;
+    private String userId;
+
     private List<Video> mVideos;
 
     private int mCurrentPosition;
@@ -46,13 +55,15 @@ public class VideoAdapter extends VideoPlayAdapter<VideoAdapter.ViewHolder> {
     public VideoAdapter(VideoActivity mContext, int i, List<Video> Videos) {
         Log.i(TAG, "use adapter");
         this.mContext = mContext;
-        this.Number = i--;
+        this.Number = i-1;
         this.mVideos = Videos;
         Log.i(TAG, "video_url_final =" +videoUrl );
         Log.i(TAG, "p_url_final = "+pictureUrl);
         videoPlayer = new VideoPlayer();
         textureView = new TextureView(mContext);
         videoPlayer.setTextureView(textureView);
+        this.userId = UserAccountUtils.userID;
+        //mCurrentHolder.setIsRecyclable(false);
     }
 
     @NonNull
@@ -69,6 +80,9 @@ public class VideoAdapter extends VideoPlayAdapter<VideoAdapter.ViewHolder> {
         videoUrl = mVideos.get(Number).videoUrl;
         NickName = mVideos.get(Number).userName;
         tvNickName.setText(NickName);
+        animationView.setProgress(0);
+        playAnimation();
+        //VideoActivity.Attention(Number, userId, mVideos);
         Log.i(TAG, "picture_url = "+pictureUrl);
         RequestOptions options = new RequestOptions().diskCacheStrategy(DiskCacheStrategy.RESOURCE);
         Glide.with(mContext).load(pictureUrl).apply(options).into(holder.ivCover);
@@ -86,6 +100,15 @@ public class VideoAdapter extends VideoPlayAdapter<VideoAdapter.ViewHolder> {
         playVideo();
     }
 
+
+    private void playAnimation(){
+        animationView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                animationView.playAnimation();
+            }
+        });
+    }
 
     private void playVideo() {
         videoPlayer.reset();
@@ -134,6 +157,7 @@ public class VideoAdapter extends VideoPlayAdapter<VideoAdapter.ViewHolder> {
     }
 
     public void release() {
+        animationView.setProgress(0);
         videoPlayer.release();
     }
     class ViewHolder extends RecyclerView.ViewHolder{
@@ -149,6 +173,8 @@ public class VideoAdapter extends VideoPlayAdapter<VideoAdapter.ViewHolder> {
             ivCover = itemView.findViewById(R.id.ivCover);
             pbLoading = itemView.findViewById(R.id.pbLoading);
             tvNickName = itemView.findViewById(R.id.tvNickname);
+            animationView = itemView.findViewById(R.id.like);
+            buttonAttention = itemView.findViewById(R.id.btn_attention);
         }
     }
 }
