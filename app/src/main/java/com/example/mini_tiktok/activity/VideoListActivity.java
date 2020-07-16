@@ -1,6 +1,7 @@
 package com.example.mini_tiktok.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -42,12 +43,17 @@ public class VideoListActivity extends Activity {
             .build();
     private IMiniDouyinService miniDouyinService = retrofit.create(IMiniDouyinService.class);
     private List<String> mIdList;
+    private static final String TAG = "VideoListActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_list);
         mBtnRefresh = findViewById(R.id.btn_refresh);
+
+        Intent intent = getIntent();
+        mIdList = (List<String>) intent.getStringArrayListExtra("IDs");
+
         initRecyclerView();
         fetchFeed(mBtnRefresh);
 
@@ -96,6 +102,7 @@ public class VideoListActivity extends Activity {
             }
         });
     }
+
     public void fetchFeed(View view) {
         mBtnRefresh.setText("requesting...");
         mBtnRefresh.setEnabled(false);
@@ -104,8 +111,8 @@ public class VideoListActivity extends Activity {
             public void onResponse(Call<GetVideosResponse> call, Response<GetVideosResponse> response) {
                 if (response.body() != null && response.body().videos != null) {
                     mVideos = response.body().videos;
-                    if(!mIdList.isEmpty()) {
-                        for(int i = 0;i<mIdList.size();i++) {
+                    if (!mIdList.isEmpty()) {
+                        for (int i = 0; i < mIdList.size(); i++) {
                             String Id = mIdList.get(i);
                             Iterator<Video> item = mVideos.iterator();
                             while (item.hasNext()) {
@@ -131,7 +138,4 @@ public class VideoListActivity extends Activity {
         });
     }
 
-    public void setIdList(List<String> idList){
-        this.mIdList = idList;
-    }
 }
