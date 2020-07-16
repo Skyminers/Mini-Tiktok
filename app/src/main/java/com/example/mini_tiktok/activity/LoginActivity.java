@@ -74,7 +74,7 @@ public class LoginActivity extends AppCompatActivity {
                             Message msg = mHandler.obtainMessage(0,"登录成功");
                             mHandler.sendMessage(msg);
                             UserAccountUtils.userID = entity.getMId();
-                            //finish();
+                            finish();
                         }
                     }
                 }.start();
