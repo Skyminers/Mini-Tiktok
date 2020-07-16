@@ -31,6 +31,7 @@ import com.example.mini_tiktok.net.PostVideoResponse;
 import com.example.mini_tiktok.net.Video;
 import com.example.mini_tiktok.utils.ImageUtils;
 import com.example.mini_tiktok.utils.ResourceUtils;
+import com.example.mini_tiktok.utils.UserAccountUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -52,8 +53,7 @@ public class UploadActivity extends Activity {
     private static final int PICK_VIDEO = 3;
     private static final int CAMERA_VIDEO = 4;
     private static final String TAG = "UploadActivityTAG";
-    private static final String myID = "15097722150";
-    private static final String myName = "刘一辰";
+    private static final String myName = "LYC";
     private final static int PHOTO_MODE = 1;
     private final static int VIDEO_MODE = 2;
     public String mSelectedImagePath;
@@ -224,7 +224,7 @@ public class UploadActivity extends Activity {
         videoPart = getMultipartFromPath("video", mSelectedVideoPath);
 
         Log.d(TAG,"Get file");
-        miniDouyinService.postVideo(myID, myName, coverImagePart, videoPart).enqueue(
+        miniDouyinService.postVideo(UserAccountUtils.userID, myName, coverImagePart, videoPart).enqueue(
                 new Callback<PostVideoResponse>() {
                     @Override
                     public void onResponse(Call<PostVideoResponse> call, Response<PostVideoResponse> response) {
