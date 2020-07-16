@@ -53,6 +53,10 @@ public class UserActivity extends Activity {
         btnChangeNick.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(UserAccountUtils.userID.equals("Guest")){
+                    Toast.makeText(UserActivity.this,"请登录后再修改昵称",Toast.LENGTH_SHORT).show();
+                    return ;
+                }
                 final EditText edit = new EditText(UserActivity.this);
 
                 AlertDialog.Builder editDialog = new AlertDialog.Builder(UserActivity.this);
