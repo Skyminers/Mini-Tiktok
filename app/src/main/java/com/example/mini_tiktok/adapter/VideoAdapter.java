@@ -2,6 +2,8 @@ package com.example.mini_tiktok.adapter;
 
 import android.animation.Animator;
 import android.content.Context;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.TextureView;
@@ -11,6 +13,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,6 +23,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.mini_tiktok.R;
+import com.example.mini_tiktok.activity.LoginActivity;
 import com.example.mini_tiktok.activity.VideoActivity;
 import com.example.mini_tiktok.activity.VideoListActivity;
 import com.example.mini_tiktok.net.Video;
@@ -44,7 +48,7 @@ public class VideoAdapter extends VideoPlayAdapter<VideoAdapter.ViewHolder> {
     private String TAG = "video_activity";
     private int Number;
     private LottieAnimationView animationView;
-    private String userId;
+    private Handler mHandler;
 
     private List<Video> mVideos;
 
@@ -62,7 +66,6 @@ public class VideoAdapter extends VideoPlayAdapter<VideoAdapter.ViewHolder> {
         videoPlayer = new VideoPlayer();
         textureView = new TextureView(mContext);
         videoPlayer.setTextureView(textureView);
-        this.userId = UserAccountUtils.userID;
         //mCurrentHolder.setIsRecyclable(false);
     }
 
@@ -79,11 +82,31 @@ public class VideoAdapter extends VideoPlayAdapter<VideoAdapter.ViewHolder> {
         pictureUrl = mVideos.get(Number).imageUrl;
         videoUrl = mVideos.get(Number).videoUrl;
         NickName = mVideos.get(Number).userName;
-        String attentionId = mVideos.get(Number).studentId;
+        final String attentionId = mVideos.get(Number).studentId;
         tvNickName.setText(NickName);
         animationView.setProgress(0);
         playAnimation();
-        //Attention(attentionId);
+        buttonAttention.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG,"Click attention");
+                changeButton(attentionId);
+            }
+        });
+        mHandler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {// 该方法在主线程中运行
+                super.handleMessage(msg);
+                switch (msg.what){
+                    case 0: {
+                        buttonAttention.setText((String)msg.obj);
+                        break;
+                    }
+                }
+
+            }
+        };
+        updateAttention(attentionId);
         Log.i(TAG, "picture_url = "+pictureUrl);
         RequestOptions options = new RequestOptions().diskCacheStrategy(DiskCacheStrategy.RESOURCE);
         Glide.with(mContext).load(pictureUrl).apply(options).into(holder.ivCover);
@@ -102,35 +125,44 @@ public class VideoAdapter extends VideoPlayAdapter<VideoAdapter.ViewHolder> {
     }
 
 
-    public void Attention(final String attentionId){
+    public void updateAttention(final String attentionId){
         new Thread(){
             @Override
             public void run(){
-                buttonAttention.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        changeButton(attentionId);
-                    }
-                });
-
-                if(AttentionUtils.checkAttention(mContext,userId, attentionId)){
-                    buttonAttention.setText("已关注");
+                Message msg;
+                if(AttentionUtils.checkAttention(mContext,UserAccountUtils.userID, attentionId)){
+                    Log.d(TAG,"Checked already attention");
+                    msg = mHandler.obtainMessage(0,"已关注");
                 }
-                else{
-                    buttonAttention.setText("关注");
+                else {
+                    msg = mHandler.obtainMessage(0, "关注");
                 }
+                mHandler.sendMessage(msg);
             }
         }.start();
-
     }
 
-    private void changeButton(String attentionId){
-        if(buttonAttention.getText() == "关注"){
-            AttentionUtils.insertAttention(mContext, userId, attentionId);
+    private void changeButton(final String attentionId){
+        if(buttonAttention.getText().toString().equals("关注")){
+            Log.d(TAG,"find in attention");
+            new Thread(){
+                @Override
+                public void run() {
+                    AttentionUtils.insertAttention(mContext, UserAccountUtils.userID, attentionId);
+                    updateAttention(attentionId);
+                }
+            }.start();
         }
         else {
-            AttentionUtils.deleteAttention(mContext, userId, attentionId);
+            new Thread(){
+                @Override
+                public void run() {
+                    AttentionUtils.deleteAttention(mContext, UserAccountUtils.userID, attentionId);
+                    updateAttention(attentionId);
+                }
+            }.start();
         }
+
     }
 
     private void playAnimation(){

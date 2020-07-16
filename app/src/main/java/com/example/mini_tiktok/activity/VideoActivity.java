@@ -55,7 +55,7 @@ public class VideoActivity extends Activity {
 
         mRvVideo = findViewById(R.id.rvVideo);
         int i = getIntent().getIntExtra("number", 0);
-        adapter = new VideoAdapter(this, i, mVideos);
+        adapter = new VideoAdapter(VideoActivity.this, i, mVideos);
         mRvVideo.setAdapter(adapter);
     }
 
