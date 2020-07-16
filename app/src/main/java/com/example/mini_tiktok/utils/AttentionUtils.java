@@ -15,6 +15,10 @@ public class AttentionUtils {
         return list;
     }
 
+    public static boolean checkAttention(Context context, String id1, String id2){
+        return getAttentionList(context,id1).contains(id2);
+    }
+
     public static void insertAttention(Context context, String id1, String id2){
         AttentionDao attentionDao = AttentionDatabase.inst(context).AttentionListDao();
         AttentionEntity attentionEntity = new AttentionEntity(id1,id2);
