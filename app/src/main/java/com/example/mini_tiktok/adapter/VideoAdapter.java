@@ -79,10 +79,11 @@ public class VideoAdapter extends VideoPlayAdapter<VideoAdapter.ViewHolder> {
         pictureUrl = mVideos.get(Number).imageUrl;
         videoUrl = mVideos.get(Number).videoUrl;
         NickName = mVideos.get(Number).userName;
+        String attentionId = mVideos.get(Number).studentId;
         tvNickName.setText(NickName);
         animationView.setProgress(0);
         playAnimation();
-        //VideoActivity.Attention(Number, userId, mVideos);
+        //Attention(attentionId);
         Log.i(TAG, "picture_url = "+pictureUrl);
         RequestOptions options = new RequestOptions().diskCacheStrategy(DiskCacheStrategy.RESOURCE);
         Glide.with(mContext).load(pictureUrl).apply(options).into(holder.ivCover);
@@ -100,6 +101,37 @@ public class VideoAdapter extends VideoPlayAdapter<VideoAdapter.ViewHolder> {
         playVideo();
     }
 
+
+    public void Attention(final String attentionId){
+        new Thread(){
+            @Override
+            public void run(){
+                buttonAttention.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        changeButton(attentionId);
+                    }
+                });
+
+                if(AttentionUtils.checkAttention(mContext,userId, attentionId)){
+                    buttonAttention.setText("已关注");
+                }
+                else{
+                    buttonAttention.setText("关注");
+                }
+            }
+        }.start();
+
+    }
+
+    private void changeButton(String attentionId){
+        if(buttonAttention.getText() == "关注"){
+            AttentionUtils.insertAttention(mContext, userId, attentionId);
+        }
+        else {
+            AttentionUtils.deleteAttention(mContext, userId, attentionId);
+        }
+    }
 
     private void playAnimation(){
         animationView.setOnClickListener(new View.OnClickListener() {

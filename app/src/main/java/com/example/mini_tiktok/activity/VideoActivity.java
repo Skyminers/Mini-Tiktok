@@ -65,9 +65,5 @@ public class VideoActivity extends Activity {
         adapter.release();
     }
 
-    public void Attention(int Number, String userId, List<Video> videos){
-        if(AttentionUtils.checkAttention(VideoActivity.this,userId, videos.get(Number).studentId)){
 
-        }
-    }
 }
