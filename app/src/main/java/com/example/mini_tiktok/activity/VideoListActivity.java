@@ -48,7 +48,7 @@ public class VideoListActivity extends Activity {
             .build();
     private IMiniDouyinService miniDouyinService = retrofit.create(IMiniDouyinService.class);
     private List<String> mIdList;
-    private static final String TAG = "VideoListActivity";
+    private static final String TAG = "VideoListActivityTAG";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +61,11 @@ public class VideoListActivity extends Activity {
 
         Intent intent = getIntent();
         mIdList = (List<String>) intent.getStringArrayListExtra("IDs");
-
+        if(mIdList != null) {
+            Log.d(TAG, "List size : " + mIdList.size());
+            for(int i=0;i<mIdList.size();++i) Log.d(TAG, "List item : " + mIdList.get(i));
+        } else
+            Log.d(TAG,"List size : " + "null");
         bind(mBtnLogin, LoginActivity.class);
         bind(mBtnUpload, UploadActivity.class);
         bind(mBtnMine, UserActivity.class);
@@ -135,14 +139,11 @@ public class VideoListActivity extends Activity {
                 if (response.body() != null && response.body().videos != null) {
                     mVideos = response.body().videos;
                     if (mIdList != null && !mIdList.isEmpty()) {
-                        for (int i = 0; i < mIdList.size(); i++) {
-                            String Id = mIdList.get(i);
-                            Iterator<Video> item = mVideos.iterator();
-                            while (item.hasNext()) {
-                                boolean result = item.next().studentId.equals(Id);
-                                if (!result) {
-                                    item.remove();
-                                }
+                        Iterator<Video> item = mVideos.iterator();
+                        while (item.hasNext()) {
+                            boolean result = mIdList.contains(item.next().studentId);
+                            if (!result) {
+                                item.remove();
                             }
                         }
                     }
