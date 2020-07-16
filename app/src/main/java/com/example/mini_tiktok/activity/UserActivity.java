@@ -55,12 +55,17 @@ public class UserActivity extends Activity {
         btnAttention.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(UserActivity.this,VideoListActivity.class);
-                ArrayList<String> list = (ArrayList<String>)
-                        AttentionUtils.getAttentionList(UserActivity.this, UserAccountUtils.userID);
-                list.add(UserAccountUtils.userID);
-                intent.putExtra("IDs",list);
-                startActivity(intent);
+                final Intent intent = new Intent(UserActivity.this,VideoListActivity.class);
+                new Thread(){
+                    @Override
+                    public void run() {
+                        ArrayList<String> list = (ArrayList<String>)
+                                AttentionUtils.getAttentionList(UserActivity.this, UserAccountUtils.userID);
+                        list.add(UserAccountUtils.userID);
+                        intent.putExtra("IDs",list);
+                        startActivity(intent);
+                    }
+                }.start();
             }
         });
 
@@ -80,5 +85,10 @@ public class UserActivity extends Activity {
     protected void onResume() {
         super.onResume();
         textId.setText(UserAccountUtils.userID);
+        if(UserAccountUtils.userID.equals("Guest")){
+            btnLogout.setText("立即登录");
+        }else{
+            btnLogout.setText("退出登录");
+        }
     }
 }
