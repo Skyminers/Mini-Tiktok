@@ -50,6 +50,8 @@ public class UploadActivity extends Activity {
     private TextView text2;
     private ImageView imageView;
     private VideoView videoView;
+    private TextView userID;
+    private TextView userNick;
 
     private Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(IMiniDouyinService.BASE_URL)
@@ -74,6 +76,11 @@ public class UploadActivity extends Activity {
         videoView = findViewById(R.id.videoView);
         text1 = findViewById(R.id.text1);
         text2 = findViewById(R.id.text2);
+        userID = findViewById(R.id.userID);
+        userNick = findViewById(R.id.userNick);
+
+        userID.setText(" ID : " + UserAccountUtils.userID);
+        userNick.setText(UserAccountUtils.userNick);
 
         btnFileImage.setOnClickListener(new Button.OnClickListener() {
             @Override
