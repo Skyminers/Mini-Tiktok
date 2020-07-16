@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -42,7 +41,6 @@ public class VideoListActivity extends Activity {
     private Button mBtnLogin;
     private Button mBtnUpload;
     private Button mBtnMine;
-    private LinearLayout Buttons;
     private List<Video> mVideos = new ArrayList<>();
     private Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(IMiniDouyinService.BASE_URL)
@@ -50,7 +48,7 @@ public class VideoListActivity extends Activity {
             .build();
     private IMiniDouyinService miniDouyinService = retrofit.create(IMiniDouyinService.class);
     private List<String> mIdList;
-    private static final String TAG = "VideoListActivity";
+    private static final String TAG = "VideoListActivityTAG";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,23 +58,18 @@ public class VideoListActivity extends Activity {
         mBtnLogin = findViewById(R.id.btn_main_login);
         mBtnUpload = findViewById(R.id.btn_main_upload);
         mBtnMine = findViewById(R.id.btn_main_mine);
-        Buttons = findViewById(R.id.btns);
+
         Intent intent = getIntent();
         mIdList = (List<String>) intent.getStringArrayListExtra("IDs");
+        if(mIdList != null) {
+            Log.d(TAG, "List size : " + mIdList.size());
+            for(int i=0;i<mIdList.size();++i) Log.d(TAG, "List item : " + mIdList.get(i));
+        } else
+            Log.d(TAG,"List size : " + "null");
+        bind(mBtnLogin, LoginActivity.class);
+        bind(mBtnUpload, UploadActivity.class);
+        bind(mBtnMine, UserActivity.class);
 
-
-
-        if(getIntent().getIntExtra("caller", 0) == 1){
-            Buttons.setVisibility(View.INVISIBLE);
-            mBtnMine.setEnabled(false);
-            mBtnUpload.setEnabled(false);
-            mBtnLogin.setEnabled(false);
-        }
-        else{
-            bind(mBtnLogin, LoginActivity.class);
-            bind(mBtnUpload, UploadActivity.class);
-            bind(mBtnMine, UserActivity.class);
-        }
         initRecyclerView();
         fetchFeed(mBtnRefresh);
 
@@ -146,14 +139,11 @@ public class VideoListActivity extends Activity {
                 if (response.body() != null && response.body().videos != null) {
                     mVideos = response.body().videos;
                     if (mIdList != null && !mIdList.isEmpty()) {
-                        for (int i = 0; i < mIdList.size(); i++) {
-                            String Id = mIdList.get(i);
-                            Iterator<Video> item = mVideos.iterator();
-                            while (item.hasNext()) {
-                                boolean result = item.next().studentId.equals(Id);
-                                if (!result) {
-                                    item.remove();
-                                }
+                        Iterator<Video> item = mVideos.iterator();
+                        while (item.hasNext()) {
+                            boolean result = mIdList.contains(item.next().studentId);
+                            if (!result) {
+                                item.remove();
                             }
                         }
                     }
