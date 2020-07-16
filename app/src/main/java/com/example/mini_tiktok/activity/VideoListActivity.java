@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import com.example.mini_tiktok.MainActivity;
 import com.example.mini_tiktok.R;
 import com.example.mini_tiktok.activity.VideoActivity;
 import com.example.mini_tiktok.net.GetVideosResponse;
@@ -37,6 +38,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class VideoListActivity extends Activity {
     private RecyclerView mRv;
     private Button mBtnRefresh;
+    private Button mBtnLogin;
+    private Button mBtnUpload;
+    private Button mBtnMine;
     private List<Video> mVideos = new ArrayList<>();
     private Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(IMiniDouyinService.BASE_URL)
@@ -51,13 +55,29 @@ public class VideoListActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_list);
         mBtnRefresh = findViewById(R.id.btn_refresh);
+        mBtnLogin = findViewById(R.id.btn_main_login);
+        mBtnUpload = findViewById(R.id.btn_main_upload);
+        mBtnMine = findViewById(R.id.btn_main_mine);
 
         Intent intent = getIntent();
         mIdList = (List<String>) intent.getStringArrayListExtra("IDs");
 
+        bind(mBtnLogin, LoginActivity.class);
+        bind(mBtnUpload, UploadActivity.class);
+        bind(mBtnMine, UserActivity.class);
+
         initRecyclerView();
         fetchFeed(mBtnRefresh);
 
+    }
+
+    void bind(Button btn, final Class<?> nxt){
+        btn.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(VideoListActivity.this,nxt));
+            }
+        });
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {

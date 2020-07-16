@@ -19,13 +19,48 @@
             android:id="@+id/btn_refresh"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="0dp"
             android:onClick="fetchFeed"
             android:text="刷新" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/video_list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="605dp" />
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_main_login"
+                android:layout_width="20dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_weight="0.3"
+                android:text="登录/注册" />
+
+            <Button
+                android:id="@+id/btn_main_upload"
+                android:layout_width="20dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.3"
+                android:text="上传作品" />
+
+            <Button
+                android:id="@+id/btn_main_mine"
+                android:layout_width="20dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="30dp"
+                android:layout_marginLeft="30dp"
+                android:layout_weight="0.3"
+                android:text="我的" />
+
+        </LinearLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
