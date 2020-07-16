@@ -17,57 +17,54 @@
 
         <Button
             android:id="@+id/btn_refresh"
+            android:background="@drawable/button_circle_shape"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="0dp"
+            android:layout_margin="10dp"
             android:onClick="fetchFeed"
             android:text="刷新" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/video_list"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"/>
+            android:layout_height="590dp" />
 
 
 
         <LinearLayout
+            android:id="@+id/btns"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/shape_cart"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+
             android:orientation="horizontal">
 
             <Button
                 android:id="@+id/btn_main_login"
-                android:layout_width="0dp"
+                android:background="@drawable/button_circle_shape"
+                android:layout_width="20dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="20dp"
-                android:layout_marginLeft="24dp"
-                android:layout_marginRight="24dp"
-                android:layout_weight="1"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_weight="0.3"
                 android:text="登录/注册" />
 
             <Button
                 android:id="@+id/btn_main_upload"
-                android:layout_width="0dp"
+                android:background="@drawable/button_circle_shape"
+                android:layout_width="20dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="20dp"
-                android:layout_marginLeft="24dp"
-                android:layout_marginRight="24dp"
-                android:layout_weight="1"
+                android:layout_weight="0.3"
                 android:text="上传作品" />
 
             <Button
                 android:id="@+id/btn_main_mine"
-                android:layout_width="0dp"
+                android:background="@drawable/button_circle_shape"
+                android:layout_width="20dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="20dp"
-                android:layout_marginLeft="24dp"
-                android:layout_marginRight="24dp"
-                android:layout_weight="1"
+                android:layout_marginRight="30dp"
+                android:layout_marginLeft="30dp"
+                android:layout_weight="0.3"
                 android:text="我的" />
 
         </LinearLayout>
