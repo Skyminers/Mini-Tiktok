@@ -18,6 +18,8 @@ public interface AttentionDao {
     @Insert
     long addAttention(AttentionEntity entity);
 
+    @Query("DELETE FROM attention WHERE id1 = :id1 and id2 = :id2")
+    void deleteAttention(String id1,String id2);
 
     @Query("SELECT id2 FROM attention WHERE id1 = :ID")
     List<String> findById1(String ID);

@@ -38,4 +38,5 @@ public class UserAccountUtils {
         AccountDao accountDao = AccountDatabase.inst(context).AccountListDao();
         accountDao.modify(entity);
     }
+
 }

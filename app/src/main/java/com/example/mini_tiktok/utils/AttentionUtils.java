@@ -20,4 +20,9 @@ public class AttentionUtils {
         AttentionEntity attentionEntity = new AttentionEntity(id1,id2);
         attentionDao.addAttention(attentionEntity);
     }
+
+    public static void deleteAttention(Context context, String id1, String id2){
+        AttentionDao attentionDao = AttentionDatabase.inst(context).AttentionListDao();
+        attentionDao.deleteAttention(id1,id2);
+    }
 }
