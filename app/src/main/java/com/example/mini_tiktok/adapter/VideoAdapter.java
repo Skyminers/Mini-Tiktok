@@ -1,6 +1,7 @@
 package com.example.mini_tiktok.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.TextureView;
 import android.view.View;
@@ -15,8 +16,14 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.mini_tiktok.R;
+import com.example.mini_tiktok.activity.VideoActivity;
+import com.example.mini_tiktok.activity.VideoListActivity;
+import com.example.mini_tiktok.net.Video;
 import com.example.mini_tiktok.view.VideoLoadingProgressbar;
 import com.lmx.library.media.VideoPlayAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class VideoAdapter extends VideoPlayAdapter<VideoAdapter.ViewHolder> {
     private Context mContext;
@@ -25,14 +32,21 @@ public class VideoAdapter extends VideoPlayAdapter<VideoAdapter.ViewHolder> {
     private TextureView textureView;
     private String videoUrl;
     private String pictureUrl;
+    private String TAG = "video_activity";
+    private int Number;
+    private List<Video> mVideos;
 
     private int mCurrentPosition;
     private ViewHolder mCurrentHolder;
 
-    public VideoAdapter(Context mContext, String videoUrl, String pictureUrl){
+
+    public VideoAdapter(VideoActivity mContext, int i, List<Video> Videos) {
+        Log.i(TAG, "use adapter");
         this.mContext = mContext;
-        this.videoUrl = videoUrl;
-        this.pictureUrl = pictureUrl;
+        this.Number = i--;
+        this.mVideos = Videos;
+        Log.i(TAG, "video_url_final =" +videoUrl );
+        Log.i(TAG, "p_url_final = "+pictureUrl);
         videoPlayer = new VideoPlayer();
         textureView = new TextureView(mContext);
         videoPlayer.setTextureView(textureView);
@@ -47,6 +61,10 @@ public class VideoAdapter extends VideoPlayAdapter<VideoAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        Number++;
+        pictureUrl = mVideos.get(Number).imageUrl;
+        videoUrl = mVideos.get(Number).videoUrl;
+        Log.i(TAG, "picture_url = "+pictureUrl);
         RequestOptions options = new RequestOptions().diskCacheStrategy(DiskCacheStrategy.RESOURCE);
         Glide.with(mContext).load(pictureUrl).apply(options).into(holder.ivCover);
     }

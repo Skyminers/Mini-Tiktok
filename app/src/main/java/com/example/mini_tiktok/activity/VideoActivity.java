@@ -15,40 +15,45 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.mini_tiktok.R;
 import com.example.mini_tiktok.adapter.VideoAdapter;
+import com.example.mini_tiktok.net.Video;
 import com.lmx.library.media.VideoPlayRecyclerView;
+
+import java.io.Serializable;
+import java.util.List;
 
 public class VideoActivity extends AppCompatActivity {
 
+    private static String TAG= "video_activity";
     private VideoPlayRecyclerView mRvVideo;
     private VideoAdapter adapter;
-    private String TAG = "video";
+    private static List<Video> mVideos;
 
-    public static void launch(Activity activity, String videoUrl, String pictureUrl ) {
+    public static void launch(Activity activity, int i, List<Video> Videos) {
+        Log.i(TAG, "init video activity");
         Intent intent = new Intent(activity, VideoActivity.class);
-        intent.putExtra("video_url", videoUrl);
-        intent.putExtra("picture_url", pictureUrl);
+        intent.putExtra("number", i);
+        Log.i(TAG, "序列化");
+        mVideos = Videos;
+        Log.i(TAG, "序列化成功");
         activity.startActivity(intent);
+        Log.i(TAG, "start");
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        Log.i(TAG, "create video activity begin");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_play);
+        Log.i(TAG, "create video activity");
         initView();
     }
 
     private void initView() {
-      /*  findViewById(R.id.ibBack).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });*/
+
         mRvVideo = findViewById(R.id.rvVideo);
-        String videoUrl = getIntent().getStringExtra("video_url");
-        String pictureUrl = getIntent().getStringExtra("picture_url");
-        Log.i(TAG, "url = "+videoUrl);
-        adapter = new VideoAdapter(this,videoUrl, pictureUrl);
+        int i = getIntent().getIntExtra("number", 0);
+        adapter = new VideoAdapter(this, i, mVideos);
         mRvVideo.setAdapter(adapter);
     }
 
@@ -57,23 +62,5 @@ public class VideoActivity extends AppCompatActivity {
         super.onDestroy();
         adapter.release();
     }
-/*    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_video_play);
-        String url = getIntent().getStringExtra("url");
-        VideoView videoView = findViewById(R.id.video_container);
-        final ProgressBar progressBar = findViewById(R.id.progress_bar);
-        videoView.setMediaController(new MediaController(this));
-        videoView.setVideoURI(Uri.parse(url));
-        videoView.requestFocus();
-        videoView.start();
-        videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(MediaPlayer mp) {
-                progressBar.setVisibility(View.GONE);
-            }
-        });
-        progressBar.setVisibility(View.VISIBLE);
-    }*/
+
 }

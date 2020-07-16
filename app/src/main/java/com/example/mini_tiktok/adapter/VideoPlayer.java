@@ -108,6 +108,7 @@ public class VideoPlayer {
      */
     public void setDataSource(String url) {
         try {
+
             mediaPlayer.setDataSource(url);
         } catch (IOException e) {
             e.printStackTrace();

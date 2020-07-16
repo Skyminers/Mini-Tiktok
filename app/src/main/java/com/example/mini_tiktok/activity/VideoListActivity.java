@@ -60,12 +60,12 @@ public class VideoListActivity extends AppCompatActivity {
             img = itemView.findViewById(R.id.img);
         }
 
-        public void bind(final Activity activity, final Video video) {
+        public void bind(final Activity activity, final Video video, final int i, final List<Video> mVideos) {
             ImageHelper.displayWebImage(video.imageUrl, img);
             img.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    VideoActivity.launch(activity, video.videoUrl, video.imageUrl);
+                    VideoActivity.launch(activity, i, mVideos);
                 }
             });
         }
@@ -86,7 +86,7 @@ public class VideoListActivity extends AppCompatActivity {
             @Override
             public void onBindViewHolder(@NonNull MyViewHolder viewHolder, int i) {
                 final Video video = mVideos.get(i);
-                viewHolder.bind(VideoListActivity.this, video);
+                viewHolder.bind(VideoListActivity.this, video, i, mVideos);
             }
 
             @Override
@@ -125,5 +125,9 @@ public class VideoListActivity extends AppCompatActivity {
                 Toast.makeText(VideoListActivity.this, throwable.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    public List<Video> getmVideos(){
+        return mVideos;
     }
 }
