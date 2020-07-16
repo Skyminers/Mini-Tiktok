@@ -10,11 +10,13 @@ import android.widget.Button;
 
 import com.example.mini_tiktok.activity.LoginActivity;
 import com.example.mini_tiktok.activity.UploadActivity;
+import com.example.mini_tiktok.activity.VideoListActivity;
 
 public class MainActivity extends AppCompatActivity {
 
     private Button btn1;
     private Button btn2;
+    private Button btn3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,9 +25,11 @@ public class MainActivity extends AppCompatActivity {
 
         btn1 = findViewById(R.id.btn1);
         btn2 = findViewById(R.id.btn2);
+        btn3 = findViewById(R.id.btn3);
 
         bind(btn1, UploadActivity.class);
         bind(btn2, LoginActivity.class);
+        bind(btn3, VideoListActivity.class);
     }
 
     void bind(Button btn, final Class<?> nxt){
