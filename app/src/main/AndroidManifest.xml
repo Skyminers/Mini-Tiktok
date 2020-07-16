@@ -23,9 +23,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.NetworkActivity" />
         <activity android:name=".activity.CameraActivity" />
         <activity android:name=".activity.UploadActivity" />
+        <activity android:name=".activity.LoginActivity" />
     </application>
 
 </manifest>

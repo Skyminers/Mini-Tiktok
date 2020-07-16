@@ -5,4 +5,7 @@
     <string name="upload">上传</string>
     <string name="take_photo">拍摄</string>
     <string name="take_video">录制</string>
+    <string name="login">用户登录</string>
+    <string name="btn_login">登录</string>
+    <string name="register">注册</string>
 </resources>
