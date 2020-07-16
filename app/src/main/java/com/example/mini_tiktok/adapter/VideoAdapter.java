@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -32,6 +33,8 @@ public class VideoAdapter extends VideoPlayAdapter<VideoAdapter.ViewHolder> {
     private TextureView textureView;
     private String videoUrl;
     private String pictureUrl;
+    private String NickName;
+    private TextView tvNickName;
     private String TAG = "video_activity";
     private int Number;
     private List<Video> mVideos;
@@ -64,6 +67,8 @@ public class VideoAdapter extends VideoPlayAdapter<VideoAdapter.ViewHolder> {
         Number++;
         pictureUrl = mVideos.get(Number).imageUrl;
         videoUrl = mVideos.get(Number).videoUrl;
+        NickName = mVideos.get(Number).userName;
+        tvNickName.setText(NickName);
         Log.i(TAG, "picture_url = "+pictureUrl);
         RequestOptions options = new RequestOptions().diskCacheStrategy(DiskCacheStrategy.RESOURCE);
         Glide.with(mContext).load(pictureUrl).apply(options).into(holder.ivCover);
@@ -71,7 +76,7 @@ public class VideoAdapter extends VideoPlayAdapter<VideoAdapter.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return 20;
+        return 200;
     }
 
     @Override
@@ -137,11 +142,13 @@ public class VideoAdapter extends VideoPlayAdapter<VideoAdapter.ViewHolder> {
         private ImageView ivCover;
         private VideoLoadingProgressbar pbLoading;
 
+
         ViewHolder(@NonNull View itemView) {
             super(itemView);
             flVideo = itemView.findViewById(R.id.flVideo);
             ivCover = itemView.findViewById(R.id.ivCover);
             pbLoading = itemView.findViewById(R.id.pbLoading);
+            tvNickName = itemView.findViewById(R.id.tvNickname);
         }
     }
 }

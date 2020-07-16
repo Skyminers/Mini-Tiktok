@@ -21,7 +21,7 @@ import com.lmx.library.media.VideoPlayRecyclerView;
 import java.io.Serializable;
 import java.util.List;
 
-public class VideoActivity extends AppCompatActivity {
+public class VideoActivity extends Activity {
 
     private static String TAG= "video_activity";
     private VideoPlayRecyclerView mRvVideo;

@@ -32,7 +32,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class VideoListActivity extends AppCompatActivity {
+public class VideoListActivity extends Activity {
     private RecyclerView mRv;
     private Button mBtnRefresh;
     private List<Video> mVideos = new ArrayList<>();
@@ -41,6 +41,7 @@ public class VideoListActivity extends AppCompatActivity {
             .addConverterFactory(GsonConverterFactory.create())
             .build();
     private IMiniDouyinService miniDouyinService = retrofit.create(IMiniDouyinService.class);
+    private List<String> mIdList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,15 +104,18 @@ public class VideoListActivity extends AppCompatActivity {
             public void onResponse(Call<GetVideosResponse> call, Response<GetVideosResponse> response) {
                 if (response.body() != null && response.body().videos != null) {
                     mVideos = response.body().videos;
-                   /* //Log.i(TAG, "mVideos_run:"+mVideos);
-                    //@TODO  5服务端没有做去重，拿到列表后，可以在端侧根据自己的id，做列表筛选。
-                    Iterator<Video> item = mVideos.iterator();
-                    while (item.hasNext()){
-                        boolean result = item.next().studentId.equals("13372505058");
-                        if(!result){
-                            item.remove();
+                    if(!mIdList.isEmpty()) {
+                        for(int i = 0;i<mIdList.size();i++) {
+                            String Id = mIdList.get(i);
+                            Iterator<Video> item = mVideos.iterator();
+                            while (item.hasNext()) {
+                                boolean result = item.next().studentId.equals(Id);
+                                if (!result) {
+                                    item.remove();
+                                }
+                            }
                         }
-                    }*/
+                    }
                     mRv.getAdapter().notifyDataSetChanged();
                 }
                 mBtnRefresh.setText("刷新");
@@ -127,7 +131,7 @@ public class VideoListActivity extends AppCompatActivity {
         });
     }
 
-    public List<Video> getmVideos(){
-        return mVideos;
+    public void setIdList(List<String> idList){
+        this.mIdList = idList;
     }
 }
