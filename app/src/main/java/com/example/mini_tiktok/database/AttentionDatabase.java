@@ -24,7 +24,7 @@ public abstract class AttentionDatabase extends RoomDatabase {
         if (INSTANCE == null) {
             synchronized (AttentionDatabase.class) {
                 if (INSTANCE == null) {
-                    INSTANCE = Room.databaseBuilder(context.getApplicationContext(), AttentionDatabase.class, "Attention.db").build();
+                    INSTANCE = Room.databaseBuilder(context.getApplicationContext(), AttentionDatabase.class, "attention.db").build();
                 }
             }
         }

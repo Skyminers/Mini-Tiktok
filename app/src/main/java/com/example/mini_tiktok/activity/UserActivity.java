@@ -11,13 +11,17 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.mini_tiktok.R;
+import com.example.mini_tiktok.utils.AttentionUtils;
 import com.example.mini_tiktok.utils.UserAccountUtils;
+
+import java.util.ArrayList;
 
 public class UserActivity extends Activity {
 
     private TextView textId;
     private Button btnMyVideo;
     private Button btnLogout;
+    private Button btnAttention;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -27,6 +31,7 @@ public class UserActivity extends Activity {
         textId = findViewById(R.id.userId);
         btnMyVideo = findViewById(R.id.btnMyVideo);
         btnLogout = findViewById(R.id.btnLogout);
+        btnAttention = findViewById(R.id.btn_attention);
 
         textId.setText(UserAccountUtils.userID);
 
@@ -39,7 +44,23 @@ public class UserActivity extends Activity {
         btnMyVideo.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO : 跳转至'我的视频'界面
+                Intent intent = new Intent(UserActivity.this,VideoListActivity.class);
+                ArrayList<String> list = new ArrayList<String>();
+                list.add(UserAccountUtils.userID);
+                intent.putExtra("IDs",list);
+                startActivity(intent);
+            }
+        });
+
+        btnAttention.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(UserActivity.this,VideoListActivity.class);
+                ArrayList<String> list = (ArrayList<String>)
+                        AttentionUtils.getAttentionList(UserActivity.this, UserAccountUtils.userID);
+                list.add(UserAccountUtils.userID);
+                intent.putExtra("IDs",list);
+                startActivity(intent);
             }
         });
 

@@ -12,14 +12,14 @@ import java.util.List;
  */
 @Dao
 public interface AttentionDao {
-    @Query("SELECT * FROM Attention")
+    @Query("SELECT * FROM attention")
     List<AttentionEntity> loadAll();
 
     @Insert
     long addAttention(AttentionEntity entity);
 
 
-    @Query("SELECT id2 FROM Attention WHERE id1 = :ID")
+    @Query("SELECT id2 FROM attention WHERE id1 = :ID")
     List<String> findById1(String ID);
 
 }

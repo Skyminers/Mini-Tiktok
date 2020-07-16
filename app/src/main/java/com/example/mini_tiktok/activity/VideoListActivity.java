@@ -111,7 +111,7 @@ public class VideoListActivity extends Activity {
             public void onResponse(Call<GetVideosResponse> call, Response<GetVideosResponse> response) {
                 if (response.body() != null && response.body().videos != null) {
                     mVideos = response.body().videos;
-                    if (!mIdList.isEmpty()) {
+                    if (mIdList != null && !mIdList.isEmpty()) {
                         for (int i = 0; i < mIdList.size(); i++) {
                             String Id = mIdList.get(i);
                             Iterator<Video> item = mVideos.iterator();

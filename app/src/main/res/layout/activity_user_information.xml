@@ -37,12 +37,22 @@
         android:layout_margin="40dp"
         android:text="@string/my_video"/>
 
+    <Button
+        android:id="@+id/btn_attention"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/btnMyVideo"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_margin="40dp"
+        android:text="@string/attention_content"/>
+
 
     <Button
         android:id="@+id/btnLogout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/btnMyVideo"
+        app:layout_constraintTop_toBottomOf="@id/btn_attention"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_margin="40dp"

@@ -13,4 +13,5 @@
     <string name="my_video">我的作品</string>
     <string name="choose_cover">选择视频封面</string>
     <string name="choose_video">选择视频</string>
+    <string name="attention_content">关注的内容</string>
 </resources>
