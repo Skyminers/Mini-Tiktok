@@ -92,6 +92,7 @@ public class UserActivity extends Activity {
                 ArrayList<String> list = new ArrayList<String>();
                 list.add(UserAccountUtils.userID);
                 intent.putExtra("IDs",list);
+                intent.putExtra("caller", 1);
                 startActivity(intent);
             }
         });
@@ -107,6 +108,7 @@ public class UserActivity extends Activity {
                                 AttentionUtils.getAttentionList(UserActivity.this, UserAccountUtils.userID);
                         list.add(UserAccountUtils.userID);
                         intent.putExtra("IDs",list);
+                        intent.putExtra("caller", 1);
                         startActivity(intent);
                     }
                 }.start();

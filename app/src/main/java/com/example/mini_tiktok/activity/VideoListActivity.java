@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -41,6 +42,7 @@ public class VideoListActivity extends Activity {
     private Button mBtnLogin;
     private Button mBtnUpload;
     private Button mBtnMine;
+    private LinearLayout Buttons;
     private List<Video> mVideos = new ArrayList<>();
     private Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(IMiniDouyinService.BASE_URL)
@@ -58,14 +60,23 @@ public class VideoListActivity extends Activity {
         mBtnLogin = findViewById(R.id.btn_main_login);
         mBtnUpload = findViewById(R.id.btn_main_upload);
         mBtnMine = findViewById(R.id.btn_main_mine);
-
+        Buttons = findViewById(R.id.btns);
         Intent intent = getIntent();
         mIdList = (List<String>) intent.getStringArrayListExtra("IDs");
 
-        bind(mBtnLogin, LoginActivity.class);
-        bind(mBtnUpload, UploadActivity.class);
-        bind(mBtnMine, UserActivity.class);
 
+
+        if(getIntent().getIntExtra("caller", 0) == 1){
+            Buttons.setVisibility(View.INVISIBLE);
+            mBtnMine.setEnabled(false);
+            mBtnUpload.setEnabled(false);
+            mBtnLogin.setEnabled(false);
+        }
+        else{
+            bind(mBtnLogin, LoginActivity.class);
+            bind(mBtnUpload, UploadActivity.class);
+            bind(mBtnMine, UserActivity.class);
+        }
         initRecyclerView();
         fetchFeed(mBtnRefresh);
 
