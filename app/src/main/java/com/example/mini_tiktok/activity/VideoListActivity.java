@@ -46,7 +46,9 @@ public class VideoListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_list);
+        mBtnRefresh = findViewById(R.id.btn_refresh);
         initRecyclerView();
+        fetchFeed(mBtnRefresh);
 
     }
 
@@ -101,7 +103,7 @@ public class VideoListActivity extends AppCompatActivity {
             public void onResponse(Call<GetVideosResponse> call, Response<GetVideosResponse> response) {
                 if (response.body() != null && response.body().videos != null) {
                     mVideos = response.body().videos;
-                    //Log.i(TAG, "mVideos_run:"+mVideos);
+                   /* //Log.i(TAG, "mVideos_run:"+mVideos);
                     //@TODO  5服务端没有做去重，拿到列表后，可以在端侧根据自己的id，做列表筛选。
                     Iterator<Video> item = mVideos.iterator();
                     while (item.hasNext()){
@@ -109,7 +111,7 @@ public class VideoListActivity extends AppCompatActivity {
                         if(!result){
                             item.remove();
                         }
-                    }
+                    }*/
                     mRv.getAdapter().notifyDataSetChanged();
                 }
                 mBtnRefresh.setText("刷新");
