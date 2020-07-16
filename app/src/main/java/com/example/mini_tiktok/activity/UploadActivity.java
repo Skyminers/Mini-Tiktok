@@ -3,6 +3,8 @@ package com.example.mini_tiktok.activity;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.media.Image;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
@@ -18,6 +21,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.example.mini_tiktok.R;
 import com.example.mini_tiktok.net.GetVideosResponse;
 import com.example.mini_tiktok.net.IMiniDouyinService;
@@ -51,8 +56,6 @@ public class UploadActivity extends Activity {
     private static final String myName = "刘一辰";
     private final static int PHOTO_MODE = 1;
     private final static int VIDEO_MODE = 2;
-    public Uri mSelectedImage;
-    private Uri mSelectedVideo;
     public String mSelectedImagePath;
     private String mSelectedVideoPath;
     private Button btnFileImage;
@@ -60,6 +63,8 @@ public class UploadActivity extends Activity {
     private Button btnFileVideo;
     private Button btnCameraVideo;
     private Button btnUpload;
+    private TextView text1;
+    private TextView text2;
     private ImageView imageView;
     private VideoView videoView;
 
@@ -84,6 +89,8 @@ public class UploadActivity extends Activity {
         btnUpload = findViewById(R.id.upload);
         imageView = findViewById(R.id.imageView);
         videoView = findViewById(R.id.videoView);
+        text1 = findViewById(R.id.text1);
+        text2 = findViewById(R.id.text2);
 
         btnFileImage.setOnClickListener(new Button.OnClickListener() {
             @Override
@@ -91,6 +98,8 @@ public class UploadActivity extends Activity {
                 chooseImage();
             }
         });
+        mSelectedImagePath = null;
+        mSelectedVideoPath = null;
 
         btnCameraImage.setOnClickListener(new Button.OnClickListener() {
             @Override
@@ -127,6 +136,15 @@ public class UploadActivity extends Activity {
                 }
             }
         });
+
+        videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+
+            @Override
+            public void onCompletion(MediaPlayer mPlayer) {
+                mPlayer.start();
+                mPlayer.setLooping(true);
+            }
+        });
     }
     public void chooseImage() {
         Log.d(TAG,"Begin to choose image");
@@ -159,20 +177,29 @@ public class UploadActivity extends Activity {
         if (resultCode == RESULT_OK && null != data) {
             if (requestCode == PICK_IMAGE) {
                 mSelectedImagePath = ResourceUtils.getRealPath(UploadActivity.this,data.getData());
-                //imageView.setImageURI(mSelectedImage);
-                Log.d(TAG, "selectedImage = " + mSelectedImage);
             } else if (requestCode == PICK_VIDEO) {
                 mSelectedVideoPath = ResourceUtils.getRealPath(UploadActivity.this,data.getData());
-                //videoView.setVideoURI(mSelectedVideo);
-                //videoView.start();
-                Log.d(TAG, "mSelectedVideo = " + mSelectedVideo);
             } else if(requestCode == CAMERA_IMAGE){
                 mSelectedImagePath = data.getStringExtra("Path");
             } else if(requestCode == CAMERA_VIDEO){
                 mSelectedVideoPath = data.getStringExtra("Path");
             }
+
+            if(requestCode == PICK_IMAGE || requestCode == CAMERA_IMAGE){
+                ImageUtils.displayImage(imageView,mSelectedImagePath);
+            } else if(requestCode == PICK_VIDEO || requestCode == CAMERA_VIDEO){
+                videoView.setVideoPath(mSelectedVideoPath);
+                videoView.start();
+            }
         }else{
             Log.d(TAG,"Unreadable result");
+        }
+
+        if(mSelectedImagePath != null){
+            text1.setTextColor(getResources().getColor(R.color.gray));
+        }
+        if(mSelectedVideoPath != null){
+            text2.setTextColor(getResources().getColor(R.color.gray));
         }
     }
 
