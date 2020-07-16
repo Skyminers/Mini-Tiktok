@@ -64,7 +64,7 @@ public class LoginActivity extends Activity {
                     return ;
                 }
                 final AccountEntity entity = new AccountEntity(userName.getText().toString(),
-                                                         password.getText().toString());
+                                                         password.getText().toString(),null);
                 new Thread(){
                     @Override
                     public void run() {
@@ -74,7 +74,9 @@ public class LoginActivity extends Activity {
                         }else{
                             Message msg = mHandler.obtainMessage(0,"登录成功");
                             mHandler.sendMessage(msg);
-                            UserAccountUtils.userID = entity.getMId();
+                            AccountEntity entityDB = UserAccountUtils.findAccountById(LoginActivity.this,entity.getMId());
+                            UserAccountUtils.userID = entityDB.getMId();
+                            UserAccountUtils.userNick = entityDB.getNick();
                             finish();
                         }
                     }
@@ -90,7 +92,7 @@ public class LoginActivity extends Activity {
                     return ;
                 }
                 final AccountEntity entity = new AccountEntity(userName.getText().toString(),
-                                                         password.getText().toString());
+                                                         password.getText().toString(),userName.getText().toString());
                 new Thread(){
                     @Override
                     public void run() {

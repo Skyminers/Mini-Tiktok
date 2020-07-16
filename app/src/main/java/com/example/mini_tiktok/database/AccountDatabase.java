@@ -11,7 +11,7 @@ import androidx.room.TypeConverters;
  * @author wangrui.sh
  * @since Jul 11, 2020
  */
-@Database(entities = {AccountEntity.class}, version = 2, exportSchema = false)
+@Database(entities = {AccountEntity.class}, version = 3, exportSchema = false)
 public abstract class AccountDatabase extends RoomDatabase {
     private static volatile AccountDatabase INSTANCE;
 

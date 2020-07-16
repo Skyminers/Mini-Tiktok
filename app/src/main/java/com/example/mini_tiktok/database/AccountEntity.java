@@ -18,9 +18,13 @@ public class AccountEntity {
     @ColumnInfo(name = "pwd")
     private String pwd;
 
-    public AccountEntity(String mId, String pwd) {
+    @ColumnInfo(name = "nick")
+    private String nick;
+
+    public AccountEntity(String mId, String pwd, String nick) {
         this.mId = mId;
         this.pwd = pwd;
+        this.nick = nick;
     }
 
     public String getMId() {
@@ -37,6 +41,14 @@ public class AccountEntity {
 
     public void setPwd(String mTime) {
         this.pwd = pwd;
+    }
+
+    public String getNick(){
+        return nick;
+    }
+
+    public void setNick(String nick){
+        this.nick = nick;
     }
 
 }

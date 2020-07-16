@@ -16,7 +16,7 @@
         android:src="@mipmap/pic0" />
 
     <TextView
-        android:id="@+id/userId"
+        android:id="@+id/userNick"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toRightOf="@id/icon"
@@ -27,11 +27,30 @@
         android:textSize="30sp"
         android:textColor="@color/black"/>
     
+    <TextView
+        android:id="@+id/userID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/userNick"
+        app:layout_constraintLeft_toLeftOf="@id/userNick"
+        android:layout_marginTop="8dp"
+        android:text="@string/test_string"/>
+
+    <Button
+        android:id="@+id/btnChangeNick"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/icon"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_margin="40dp"
+        android:text="@string/modify_nickname"/>
+
     <Button
         android:id="@+id/btnMyVideo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/icon"
+        app:layout_constraintTop_toBottomOf="@id/btnChangeNick"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_margin="40dp"

@@ -10,7 +10,7 @@ import androidx.room.RoomDatabase;
  * @author wangrui.sh
  * @since Jul 11, 2020
  */
-@Database(entities = {AttentionEntity.class}, version = 2, exportSchema = false)
+@Database(entities = {AttentionEntity.class}, version = 3, exportSchema = false)
 public abstract class AttentionDatabase extends RoomDatabase {
     private static volatile AttentionDatabase INSTANCE;
 

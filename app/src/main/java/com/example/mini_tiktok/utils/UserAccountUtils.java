@@ -9,6 +9,7 @@ import com.example.mini_tiktok.database.AccountEntity;
 public class UserAccountUtils {
 
     public static String userID = "Guest";
+    public static String userNick = "Guest";
 
     public static AccountEntity findAccountById(Context context,String ID){
         AccountDao accountDao = AccountDatabase.inst(context).AccountListDao();
@@ -31,5 +32,10 @@ public class UserAccountUtils {
         if(findAccountById(context,entity.getMId()) != null) return false;
         insertAccount(context,entity);
         return true;
+    }
+
+    public static void modifyNick(Context context, AccountEntity entity){
+        AccountDao accountDao = AccountDatabase.inst(context).AccountListDao();
+        accountDao.modify(entity);
     }
 }

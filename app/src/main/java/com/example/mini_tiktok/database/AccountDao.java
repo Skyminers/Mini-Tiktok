@@ -20,6 +20,9 @@ public interface AccountDao {
     @Insert
     long addAccount(AccountEntity entity);
 
+    @Update
+    void modify(AccountEntity entity);
+
 
     @Query("SELECT * FROM todo WHERE id = :ID")
     AccountEntity findById(String ID);

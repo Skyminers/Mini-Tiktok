@@ -14,4 +14,7 @@
     <string name="choose_cover">选择视频封面</string>
     <string name="choose_video">选择视频</string>
     <string name="attention_content">关注的内容</string>
+    <string name="modify_nickname">修改昵称</string>
+    <string name="dialog_edit_text">请输入你的新昵称</string>
+    <string name="dialog_btn_confirm_text">确认</string>
 </resources>
