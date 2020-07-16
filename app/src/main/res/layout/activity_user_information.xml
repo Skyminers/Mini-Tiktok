@@ -38,6 +38,7 @@
 
     <Button
         android:id="@+id/btnChangeNick"
+        android:background="@drawable/button_circle_shape"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/icon"
@@ -48,6 +49,7 @@
 
     <Button
         android:id="@+id/btnMyVideo"
+        android:background="@drawable/button_circle_shape"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/btnChangeNick"
@@ -58,6 +60,7 @@
 
     <Button
         android:id="@+id/btn_attention"
+        android:background="@drawable/button_circle_shape"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/btnMyVideo"
@@ -69,6 +72,7 @@
 
     <Button
         android:id="@+id/btnLogout"
+        android:background="@drawable/button_circle_shape"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/btn_attention"

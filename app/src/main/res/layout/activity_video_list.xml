@@ -17,16 +17,17 @@
 
         <Button
             android:id="@+id/btn_refresh"
+            android:background="@drawable/button_circle_shape"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="0dp"
+            android:layout_margin="10dp"
             android:onClick="fetchFeed"
             android:text="刷新" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/video_list"
             android:layout_width="match_parent"
-            android:layout_height="605dp" />
+            android:layout_height="590dp" />
 
 
 
@@ -35,10 +36,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="10dp"
+
             android:orientation="horizontal">
 
             <Button
                 android:id="@+id/btn_main_login"
+                android:background="@drawable/button_circle_shape"
                 android:layout_width="20dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp"
@@ -48,6 +51,7 @@
 
             <Button
                 android:id="@+id/btn_main_upload"
+                android:background="@drawable/button_circle_shape"
                 android:layout_width="20dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.3"
@@ -55,6 +59,7 @@
 
             <Button
                 android:id="@+id/btn_main_mine"
+                android:background="@drawable/button_circle_shape"
                 android:layout_width="20dp"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="30dp"

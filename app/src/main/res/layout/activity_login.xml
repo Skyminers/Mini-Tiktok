@@ -133,11 +133,11 @@
         android:layout_below="@id/rl_userPassword"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
-        android:background="@drawable/round_corner_bg"
+        android:background="@drawable/button_circle_shape"
         android:gravity="center"
         android:padding="10dp"
         android:text="@string/btn_login"
-        android:textColor="#fff"
+        android:textColor="#000"
         android:textSize="18sp" />
 
     <Button
@@ -147,11 +147,11 @@
         android:layout_below="@id/btn_login"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
-        android:background="@drawable/round_corner_bg"
+        android:background="@drawable/button_circle_shape"
         android:gravity="center"
         android:padding="10dp"
         android:text="@string/register"
-        android:textColor="#fff"
+        android:textColor="#000"
         android:textSize="18sp" />
 
 </RelativeLayout>
