@@ -24,6 +24,7 @@ import com.example.mini_tiktok.net.IMiniDouyinService;
 import com.example.mini_tiktok.net.ImageHelper;
 import com.example.mini_tiktok.net.PostVideoResponse;
 import com.example.mini_tiktok.net.Video;
+import com.example.mini_tiktok.utils.ImageUtils;
 import com.example.mini_tiktok.utils.ResourceUtils;
 
 import java.io.File;
@@ -52,6 +53,8 @@ public class UploadActivity extends AppCompatActivity {
     private final static int VIDEO_MODE = 2;
     public Uri mSelectedImage;
     private Uri mSelectedVideo;
+    public String mSelectedImagePath;
+    private String mSelectedVideoPath;
     private Button btnFileImage;
     private Button btnCameraImage;
     private Button btnFileVideo;
@@ -117,7 +120,7 @@ public class UploadActivity extends AppCompatActivity {
         btnUpload.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (mSelectedVideo != null && mSelectedImage != null) {
+                if (mSelectedVideoPath != null && mSelectedImagePath != null) {
                     postVideo();
                 } else {
                     Toast.makeText(UploadActivity.this,"请选择视频及其封面",Toast.LENGTH_SHORT).show();
@@ -154,23 +157,27 @@ public class UploadActivity extends AppCompatActivity {
                 + "]");
 
         if (resultCode == RESULT_OK && null != data) {
-            if (requestCode == PICK_IMAGE || requestCode == CAMERA_IMAGE) {
-                mSelectedImage = data.getData();
-                imageView.setImageURI(mSelectedImage);
+            if (requestCode == PICK_IMAGE) {
+                mSelectedImagePath = ResourceUtils.getRealPath(UploadActivity.this,data.getData());
+                //imageView.setImageURI(mSelectedImage);
                 Log.d(TAG, "selectedImage = " + mSelectedImage);
-            } else if (requestCode == PICK_VIDEO || requestCode == CAMERA_VIDEO) {
-                mSelectedVideo = data.getData();
-                videoView.setVideoURI(mSelectedVideo);
-                videoView.start();
+            } else if (requestCode == PICK_VIDEO) {
+                mSelectedVideoPath = ResourceUtils.getRealPath(UploadActivity.this,data.getData());
+                //videoView.setVideoURI(mSelectedVideo);
+                //videoView.start();
                 Log.d(TAG, "mSelectedVideo = " + mSelectedVideo);
+            } else if(requestCode == CAMERA_IMAGE){
+                mSelectedImagePath = data.getStringExtra("Path");
+            } else if(requestCode == CAMERA_VIDEO){
+                mSelectedVideoPath = data.getStringExtra("Path");
             }
         }else{
             Log.d(TAG,"Unreadable result");
         }
     }
 
-    private MultipartBody.Part getMultipartFromUri(String name, Uri uri) {
-        File f = new File(ResourceUtils.getRealPath(UploadActivity.this, uri));
+    private MultipartBody.Part getMultipartFromPath(String name, String path) {
+        File f = new File(path);
         RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), f);
         return MultipartBody.Part.createFormData(name, f.getName(), requestFile);
     }
@@ -181,13 +188,14 @@ public class UploadActivity extends AppCompatActivity {
         btnUpload.setEnabled(false);
         MultipartBody.Part coverImagePart;
         MultipartBody.Part videoPart;
-        try {
-            coverImagePart = getMultipartFromUri("cover_image", mSelectedImage);
-            videoPart = getMultipartFromUri("video", mSelectedVideo);
-        }catch(Exception e){
-            Log.e(TAG,e.getMessage());
-            return ;
-        }
+
+
+        /*coverImagePart = getMultipartFromUri("cover_image", mSelectedImage);
+        videoPart = getMultipartFromUri("video", mSelectedVideo);*/
+
+        coverImagePart = getMultipartFromPath("cover_image",mSelectedImagePath);
+        videoPart = getMultipartFromPath("video", mSelectedVideoPath);
+
         Log.d(TAG,"Get file");
         miniDouyinService.postVideo(myID, myName, coverImagePart, videoPart).enqueue(
                 new Callback<PostVideoResponse>() {
@@ -198,17 +206,12 @@ public class UploadActivity extends AppCompatActivity {
                             Toast.makeText(UploadActivity.this, response.body().toString(), Toast.LENGTH_SHORT)
                                     .show();
                         }
-                        new AlertDialog.Builder(UploadActivity.this)
-                                .setTitle("上传成功")
-                                .setMessage("恭喜您成功上传了一个视频")
-                                .setPositiveButton("确定", null)
-                                .show();
                         finish();
                     }
 
                     @Override
                     public void onFailure(Call<PostVideoResponse> call, Throwable throwable) {
-                        Log.d(TAG,"Post Failed : " + throwable.getMessage());
+                        Log.d(TAG,"Post Failed : " + throwable.getMessage() + "\n" + throwable.getCause() + "\n" + throwable.getStackTrace());
                         btnUpload.setEnabled(true);
                         btnUpload.setText(getString(R.string.upload));
                         Toast.makeText(UploadActivity.this, throwable.getMessage(), Toast.LENGTH_SHORT).show();

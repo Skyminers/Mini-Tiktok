@@ -106,7 +106,7 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
                     fos.write(bytes);
                     fos.close();
                     Intent intent = new Intent();
-                    intent.setData(Uri.parse(filePath));
+                    intent.putExtra("Path",filePath);
                     setResult(RESULT_OK,intent);
                     finish();
                 } catch (FileNotFoundException e) {
@@ -223,7 +223,7 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
             mCamera.lock();
 
             Intent intent = new Intent();
-            intent.setData(Uri.parse(mp4Path));
+            intent.putExtra("Path",mp4Path);
             setResult(RESULT_OK,intent);
             finish();
 
