@@ -8,7 +8,7 @@ import com.example.mini_tiktok.database.AccountEntity;
 
 public class UserAccountUtils {
 
-    public static String UserID = "Guest";
+    public static String userID = "Guest";
 
     public static AccountEntity findAccountById(Context context,String ID){
         AccountDao accountDao = AccountDatabase.inst(context).AccountListDao();
