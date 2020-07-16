@@ -4,27 +4,22 @@
     android:id="@+id/activity_login"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/logoScreenBackground">
+    android:background="@color/activity_background">
 
-
-
-    <TextView
-        android:id="@+id/tv_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/logo"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="160dp"
-        android:text="@string/login"
-        android:textColor="#000"
-        android:textSize="23sp"
-        android:typeface="monospace" />
+        android:layout_marginTop="100dp"
+        android:src="@mipmap/logo" />
 
     <RelativeLayout
         android:id="@+id/rl_userName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tv_title"
-        android:layout_marginTop="40dp"
+        android:layout_below="@id/logo"
+        android:layout_marginTop="60dp"
         android:background="@drawable/rectangle_edittext">
 
         <ImageView

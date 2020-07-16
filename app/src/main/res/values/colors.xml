@@ -14,4 +14,5 @@
     <color name="list_focus_color">#bdbdbd</color>
     <color name="logoScreenBackground">#F7F7F7</color>
     <color name="black">#000000</color>
+    <color name="activity_background">#F6FBED</color>
 </resources>
