@@ -71,21 +71,4 @@ public class ImageUtils {
         imageView.setImageBitmap(bitmap);
     }
 
-    public static String getPath(Context context, Uri uri) {
-        String path = null;
-        Cursor cursor = context.getContentResolver().query(uri, null, null, null, null);
-        if (cursor == null) {
-            return null;
-        }
-        if (cursor.moveToFirst()) {
-            try {
-                path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        cursor.close();
-        return path;
-    }
-
 }
