@@ -65,7 +65,7 @@ public class VideoListActivity extends AppCompatActivity {
             img.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    VideoActivity.launch(activity, video.videoUrl);
+                    VideoActivity.launch(activity, video.videoUrl, video.imageUrl);
                 }
             });
         }

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.MediaController;
 import android.widget.ProgressBar;
@@ -13,16 +14,50 @@ import android.widget.VideoView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.mini_tiktok.R;
+import com.example.mini_tiktok.adapter.VideoAdapter;
+import com.lmx.library.media.VideoPlayRecyclerView;
 
 public class VideoActivity extends AppCompatActivity {
 
-    public static void launch(Activity activity, String url) {
+    private VideoPlayRecyclerView mRvVideo;
+    private VideoAdapter adapter;
+    private String TAG = "video";
+
+    public static void launch(Activity activity, String videoUrl, String pictureUrl ) {
         Intent intent = new Intent(activity, VideoActivity.class);
-        intent.putExtra("url", url);
+        intent.putExtra("video_url", videoUrl);
+        intent.putExtra("picture_url", pictureUrl);
         activity.startActivity(intent);
     }
 
     @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_video_play);
+        initView();
+    }
+
+    private void initView() {
+      /*  findViewById(R.id.ibBack).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });*/
+        mRvVideo = findViewById(R.id.rvVideo);
+        String videoUrl = getIntent().getStringExtra("video_url");
+        String pictureUrl = getIntent().getStringExtra("picture_url");
+        Log.i(TAG, "url = "+videoUrl);
+        adapter = new VideoAdapter(this,videoUrl, pictureUrl);
+        mRvVideo.setAdapter(adapter);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        adapter.release();
+    }
+/*    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_play);
@@ -40,5 +75,5 @@ public class VideoActivity extends AppCompatActivity {
             }
         });
         progressBar.setVisibility(View.VISIBLE);
-    }
+    }*/
 }

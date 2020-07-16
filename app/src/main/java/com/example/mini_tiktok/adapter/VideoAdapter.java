@@ -23,12 +23,16 @@ public class VideoAdapter extends VideoPlayAdapter<VideoAdapter.ViewHolder> {
 
     private VideoPlayer videoPlayer;
     private TextureView textureView;
+    private String videoUrl;
+    private String pictureUrl;
 
     private int mCurrentPosition;
     private ViewHolder mCurrentHolder;
 
-    public VideoAdapter(Context mContext){
+    public VideoAdapter(Context mContext, String videoUrl, String pictureUrl){
         this.mContext = mContext;
+        this.videoUrl = videoUrl;
+        this.pictureUrl = pictureUrl;
         videoPlayer = new VideoPlayer();
         textureView = new TextureView(mContext);
         videoPlayer.setTextureView(textureView);
@@ -44,7 +48,7 @@ public class VideoAdapter extends VideoPlayAdapter<VideoAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         RequestOptions options = new RequestOptions().diskCacheStrategy(DiskCacheStrategy.RESOURCE);
-        Glide.with(mContext).load("https://tx2.a.yximgs.com/upic/2020/04/24/20/BMjAyMDA0MjQyMDExMDRfNTkzMzMzMzJfMjczMzU3NDA0ODVfMV8z_B26385cd47079260e711ba54cdf65b594.jpg").apply(options).into(holder.ivCover);
+        Glide.with(mContext).load(pictureUrl).apply(options).into(holder.ivCover);
     }
 
     @Override
@@ -102,7 +106,7 @@ public class VideoAdapter extends VideoPlayAdapter<VideoAdapter.ViewHolder> {
             }
             mCurrentHolder.flVideo.addView(textureView);
         }
-        videoPlayer.setDataSource("https://txmov2.a.yximgs.com/bs2/newWatermark/MjczMzU3NDA0ODU_zh_3.mp4");
+        videoPlayer.setDataSource(videoUrl);
         videoPlayer.prepare();
     }
 
