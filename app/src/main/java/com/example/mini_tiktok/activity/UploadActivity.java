@@ -3,6 +3,7 @@ package com.example.mini_tiktok.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -41,6 +42,10 @@ public class UploadActivity extends Activity {
     private final static int VIDEO_MODE = 2;
     public String mSelectedImagePath;
     private String mSelectedVideoPath;
+    public Uri mSelectedImage;
+    private Uri mSelectedVideo;
+    private boolean flag1;
+    private boolean flag2;
     private Button btnFileImage;
     private Button btnCameraImage;
     private Button btnFileVideo;
@@ -78,6 +83,11 @@ public class UploadActivity extends Activity {
         text2 = findViewById(R.id.text2);
         userID = findViewById(R.id.userID);
         userNick = findViewById(R.id.userNick);
+
+        flag1 = false;
+        flag2 = false;
+        mSelectedImage = null;
+        mSelectedVideo = null;
 
         userID.setText(" ID : " + UserAccountUtils.userID);
         userNick.setText(UserAccountUtils.userNick);
@@ -119,7 +129,8 @@ public class UploadActivity extends Activity {
         btnUpload.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (mSelectedVideoPath != null && mSelectedImagePath != null) {
+                if ( (mSelectedVideoPath != null || mSelectedVideo != null)
+                        && (mSelectedImagePath != null || mSelectedImage != null) ) {
                     postVideo();
                 } else {
                     Toast.makeText(UploadActivity.this,"请选择视频及其封面",Toast.LENGTH_SHORT).show();
@@ -166,31 +177,43 @@ public class UploadActivity extends Activity {
 
         if (resultCode == RESULT_OK && null != data) {
             if (requestCode == PICK_IMAGE) {
-                mSelectedImagePath = ResourceUtils.getRealPath(UploadActivity.this,data.getData());
+                flag1 = false;
+                mSelectedImage = data.getData();
             } else if (requestCode == PICK_VIDEO) {
-                mSelectedVideoPath = ResourceUtils.getRealPath(UploadActivity.this,data.getData());
+                flag2 = false;
+                mSelectedVideo = data.getData();
             } else if(requestCode == CAMERA_IMAGE){
+                flag1 = true;
                 mSelectedImagePath = data.getStringExtra("Path");
             } else if(requestCode == CAMERA_VIDEO){
+                flag2 = true;
                 mSelectedVideoPath = data.getStringExtra("Path");
             }
 
-            if(requestCode == PICK_IMAGE || requestCode == CAMERA_IMAGE){
-                ImageUtils.displayImage(imageView,mSelectedImagePath);
-            } else if(requestCode == PICK_VIDEO || requestCode == CAMERA_VIDEO){
-                videoView.setVideoPath(mSelectedVideoPath);
+            if(requestCode == CAMERA_IMAGE || requestCode == PICK_IMAGE){
+                if(flag1) ImageUtils.displayImage(imageView,mSelectedImagePath);
+                else imageView.setImageURI(mSelectedImage);
+            } else if(requestCode == CAMERA_VIDEO || requestCode == PICK_VIDEO){
+                if(flag2) videoView.setVideoPath(mSelectedVideoPath);
+                else videoView.setVideoURI(mSelectedVideo);
                 videoView.start();
             }
         }else{
             Log.d(TAG,"Unreadable result");
         }
 
-        if(mSelectedImagePath != null){
+        if(mSelectedImagePath != null || mSelectedImage != null){
             text1.setTextColor(getResources().getColor(R.color.gray));
         }
-        if(mSelectedVideoPath != null){
+        if(mSelectedVideoPath != null || mSelectedVideo != null){
             text2.setTextColor(getResources().getColor(R.color.gray));
         }
+    }
+
+    private MultipartBody.Part getMultipartFromUri(String name, Uri uri) {
+        File f = new File(ResourceUtils.getRealPath(UploadActivity.this, uri));
+        RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), f);
+        return MultipartBody.Part.createFormData(name, f.getName(), requestFile);
     }
 
     private MultipartBody.Part getMultipartFromPath(String name, String path) {
@@ -206,12 +229,12 @@ public class UploadActivity extends Activity {
         MultipartBody.Part coverImagePart;
         MultipartBody.Part videoPart;
 
+        if(flag1) coverImagePart = getMultipartFromPath("cover_image",mSelectedImagePath);
+        else coverImagePart = getMultipartFromUri("cover_image", mSelectedImage);
 
-        /*coverImagePart = getMultipartFromUri("cover_image", mSelectedImage);
-        videoPart = getMultipartFromUri("video", mSelectedVideo);*/
+        if(flag2) videoPart = getMultipartFromPath("video", mSelectedVideoPath);
+        else videoPart = getMultipartFromUri("video", mSelectedVideo);
 
-        coverImagePart = getMultipartFromPath("cover_image",mSelectedImagePath);
-        videoPart = getMultipartFromPath("video", mSelectedVideoPath);
 
         Log.d(TAG,"Get file");
         miniDouyinService.postVideo(UserAccountUtils.userID, UserAccountUtils.userNick, coverImagePart, videoPart).enqueue(
@@ -236,11 +259,4 @@ public class UploadActivity extends Activity {
                 });
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if(mSelectedVideoPath != null){
-            videoView.start();
-        }
-    }
 }
